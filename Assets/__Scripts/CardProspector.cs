@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardProspector : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+public enum eCardState { drawpile, tableau, target, discard }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+public class CardProspector : Card
+{
+    [Header("Set Dynamically: CardProspector")]
+    public eCardState state = eCardState.drawpile;
+    public List<CardProspector> hiddenBy = new List<CardProspector>();
+    public int layoutID;
+    public SlotDef slotDef;
+
+
+
 }
