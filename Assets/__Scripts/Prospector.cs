@@ -180,6 +180,7 @@ public class Prospector : MonoBehaviour
     {
         switch (cd.state)
         {
+
             case eCardState.target:
                 break;
 
@@ -187,7 +188,7 @@ public class Prospector : MonoBehaviour
                 MoveToDiscard(target);
                 MoveToTarget(Draw());
                 UpdateDrawPile();
-                //ScoreManager.EVENT(eScoreEvent.draw);
+                ScoreManager.EVENT(eScoreEvent.draw);
                 //FloatingScoreHandler(eScoreEvent.draw);
                 break;
 
@@ -204,12 +205,54 @@ public class Prospector : MonoBehaviour
                 if (!validMatch) return;
                 tableau.Remove(cd);
                  MoveToTarget(cd);
-               SetTableauFaces();
-              //  ScoreManager.EVENT(eScoreEvent.mine);
-               // FloatingScoreHandler(eScoreEvent.mine);
+                  SetTableauFaces();
+              ScoreManager.EVENT(eScoreEvent.mine);
+               //FloatingScoreHandler(eScoreEvent.mine);
                 break;
         }
+        CheckForGameOver();
     }
+    void CheckForGameOver()
+    {
+        if (tableau.Count == 0)
+        {
+            GameOver(true);
+            return;
+        }
+
+        if (drawPile.Count > 0)
+        {
+            return;
+        }
+
+        foreach (CardProspector cd in tableau)
+        {
+            if (AdjacentRank(cd, target))
+            {
+                return;
+            }
+        }
+
+        GameOver(false);
+    }
+
+    void GameOver(bool won)
+    {
+        if (won)
+        {
+            //print("Game over. You won!");
+            ScoreManager.EVENT(eScoreEvent.gameWin);
+           // FloatingScoreHandler(eScoreEvent.gameWin);
+        }
+        else
+        {
+            //print("Game over. You lost :(");
+            ScoreManager.EVENT(eScoreEvent.gameLoss);
+            //FloatingScoreHandler(eScoreEvent.gameLoss);
+        }
+        SceneManager.LoadScene("_Prospector_Scene_0");
+    }
+
     public bool AdjacentRank(CardProspector c0, CardProspector c1)
     {
         if (!c0.faceUp || !c1.faceUp) return (false);
