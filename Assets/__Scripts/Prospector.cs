@@ -100,6 +100,7 @@ public class Prospector : MonoBehaviour
 
             tableau.Add(cp);
         }
+<<<<<<< HEAD
 
         foreach (CardProspector tCP in tableau)
         {
@@ -124,21 +125,12 @@ public class Prospector : MonoBehaviour
         }
         return (null);
     }
+=======
+        MoveToTarget(Draw());
+        UpdateDrawPile();
 
-    void SetTableauFaces()
-    {
-        foreach (CardProspector cd in tableau)
-        {
-            bool faceUp = true;
-            foreach (CardProspector cover in cd.hiddenBy)
-            {
-                if (cover.state == eCardState.tableau)
-                {
-                    faceUp = false;
-                }
-            }
-            cd.faceUp = faceUp;
-        }
+>>>>>>> parent of ffd9e8a... Works fully
+
     }
 
     void MoveToDiscard(CardProspector cd)
@@ -201,6 +193,7 @@ public class Prospector : MonoBehaviour
                 break;
 
             case eCardState.tableau:
+<<<<<<< HEAD
                 bool validMatch = true;
                 if (!cd.faceUp)
                 {
@@ -216,10 +209,28 @@ public class Prospector : MonoBehaviour
                 SetTableauFaces();
                 ScoreManager.EVENT(eScoreEvent.mine);
                 FloatingScoreHandler(eScoreEvent.mine);
+=======
+               // bool validMatch = true;
+               // if (!cd.faceUp)
+               // {
+               //     validMatch = false;
+               // }
+               // if (!AdjacentRank(cd, target))
+               // {
+               //     validMatch = false;
+               // }
+               // if (!validMatch) return;
+               // tableau.Remove(cd);
+               // MoveToTarget(cd);
+               // SetTableauFaces();
+              //  ScoreManager.EVENT(eScoreEvent.mine);
+               // FloatingScoreHandler(eScoreEvent.mine);
+>>>>>>> parent of ffd9e8a... Works fully
                 break;
         }
         CheckForGameOver();
     }
+<<<<<<< HEAD
 
     void CheckForGameOver()
     {
@@ -320,5 +331,8 @@ public class Prospector : MonoBehaviour
         }
     }
 
+=======
+   }
+>>>>>>> parent of ffd9e8a... Works fully
 
 }
