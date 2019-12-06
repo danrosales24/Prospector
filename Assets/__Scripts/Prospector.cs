@@ -20,8 +20,6 @@ public class Prospector : MonoBehaviour
     public Vector2 fsPosRun = new Vector2(.5f, .75f);
     public Vector2 fsPosMid2 = new Vector2(.4f, 1.0f);
     public Vector2 fsPosEnd = new Vector2(.5f, .95f);
-    public float reloadDelay = 2f;
-    // public Text gameOverText, roundResultText, highScoreText;
 
     [Header("Set Dynamically")]
     public Deck deck;
@@ -31,6 +29,8 @@ public class Prospector : MonoBehaviour
     public CardProspector target;
     public List<CardProspector> tableau;
     public List<CardProspector> discardPile;
+    public FloatingScore fsRun;
+
     void Awake()
     {
         S = this;
@@ -38,16 +38,25 @@ public class Prospector : MonoBehaviour
 
     void Start()
     {
+        Scoreboard.S.score = ScoreManager.SCORE;
         deck = GetComponent<Deck>();
         deck.InitDeck(deckXML.text);
         Deck.Shuffle(ref deck.cards);
 
+        /*    Card c;
+            for (int cNum=0; cNum<deck.cards.Count; cNum++)
+            {
+                c = deck.cards[cNum];
+                c.transform.localPosition = new Vector3((cNum % 13) * 13, cNum/13*4,0);
+            }
+        */
         layout = GetComponent<Layout>();
         layout.ReadLayout(layoutXML.text);
+
         drawPile = ConvertListCardsToListCardProspectors(deck.cards);
         LayoutGame();
-
     }
+
     List<CardProspector> ConvertListCardsToListCardProspectors(List<Card> lCD)
     {
         List<CardProspector> lCP = new List<CardProspector>();
@@ -91,11 +100,7 @@ public class Prospector : MonoBehaviour
 
             tableau.Add(cp);
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of dcf04ee... Fix problems added background
         foreach (CardProspector tCP in tableau)
         {
             foreach (int hid in tCP.slotDef.hiddenBy)
@@ -104,33 +109,36 @@ public class Prospector : MonoBehaviour
                 tCP.hiddenBy.Add(cp);
             }
         }
-
         MoveToTarget(Draw());
         UpdateDrawPile();
-
     }
-        CardProspector FindCardByLayoutID(int layoutID)
+
+    CardProspector FindCardByLayoutID(int layoutID)
+    {
+        foreach (CardProspector tCP in tableau)
         {
-            foreach (CardProspector tCP in tableau)
+            if (tCP.layoutID == layoutID)
             {
-                if (tCP.layoutID == layoutID)
-                {
-                    return (tCP);
-                }
+                return (tCP);
             }
-            return (null);
         }
-<<<<<<< HEAD
         return (null);
     }
-=======
-        MoveToTarget(Draw());
-        UpdateDrawPile();
 
->>>>>>> parent of ffd9e8a... Works fully
-=======
->>>>>>> parent of dcf04ee... Fix problems added background
-
+    void SetTableauFaces()
+    {
+        foreach (CardProspector cd in tableau)
+        {
+            bool faceUp = true;
+            foreach (CardProspector cover in cd.hiddenBy)
+            {
+                if (cover.state == eCardState.tableau)
+                {
+                    faceUp = false;
+                }
+            }
+            cd.faceUp = faceUp;
+        }
     }
 
     void MoveToDiscard(CardProspector cd)
@@ -181,7 +189,6 @@ public class Prospector : MonoBehaviour
     {
         switch (cd.state)
         {
-
             case eCardState.target:
                 break;
 
@@ -190,11 +197,10 @@ public class Prospector : MonoBehaviour
                 MoveToTarget(Draw());
                 UpdateDrawPile();
                 ScoreManager.EVENT(eScoreEvent.draw);
-                //FloatingScoreHandler(eScoreEvent.draw);
+                FloatingScoreHandler(eScoreEvent.draw);
                 break;
 
             case eCardState.tableau:
-<<<<<<< HEAD
                 bool validMatch = true;
                 if (!cd.faceUp)
                 {
@@ -206,43 +212,15 @@ public class Prospector : MonoBehaviour
                 }
                 if (!validMatch) return;
                 tableau.Remove(cd);
-<<<<<<< HEAD
                 MoveToTarget(cd);
                 SetTableauFaces();
                 ScoreManager.EVENT(eScoreEvent.mine);
                 FloatingScoreHandler(eScoreEvent.mine);
-=======
-               // bool validMatch = true;
-               // if (!cd.faceUp)
-               // {
-               //     validMatch = false;
-               // }
-               // if (!AdjacentRank(cd, target))
-               // {
-               //     validMatch = false;
-               // }
-               // if (!validMatch) return;
-               // tableau.Remove(cd);
-               // MoveToTarget(cd);
-               // SetTableauFaces();
-              //  ScoreManager.EVENT(eScoreEvent.mine);
-               // FloatingScoreHandler(eScoreEvent.mine);
->>>>>>> parent of ffd9e8a... Works fully
-=======
-                 MoveToTarget(cd);
-                  SetTableauFaces();
-              ScoreManager.EVENT(eScoreEvent.mine);
-               //FloatingScoreHandler(eScoreEvent.mine);
->>>>>>> parent of dcf04ee... Fix problems added background
                 break;
         }
         CheckForGameOver();
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of dcf04ee... Fix problems added background
     void CheckForGameOver()
     {
         if (tableau.Count == 0)
@@ -271,15 +249,15 @@ public class Prospector : MonoBehaviour
     {
         if (won)
         {
-            //print("Game over. You won!");
+            print("Game over. You won!");
             ScoreManager.EVENT(eScoreEvent.gameWin);
-           // FloatingScoreHandler(eScoreEvent.gameWin);
+            FloatingScoreHandler(eScoreEvent.gameWin);
         }
         else
         {
             //print("Game over. You lost :(");
             ScoreManager.EVENT(eScoreEvent.gameLoss);
-            //FloatingScoreHandler(eScoreEvent.gameLoss);
+            FloatingScoreHandler(eScoreEvent.gameLoss);
         }
         SceneManager.LoadScene("_Prospector_Scene_0");
     }
@@ -296,13 +274,51 @@ public class Prospector : MonoBehaviour
         return false;
     }
 
+    void FloatingScoreHandler(eScoreEvent evt)
+    {
+        List<Vector2> fsPts;
+        switch (evt)
+        {
+            case eScoreEvent.draw:
+            case eScoreEvent.gameWin:
+            case eScoreEvent.gameLoss:
+                if (fsRun != null)
+                {
+                    fsPts = new List<Vector2>();
+                    fsPts.Add(fsPosRun);
+                    fsPts.Add(fsPosMid2);
+                    fsPts.Add(fsPosEnd);
+                    fsRun.reportFinishTo = Scoreboard.S.gameObject;
+                    fsRun.Init(fsPts, 0, 1);
+                    fsRun.fontSizes = new List<float>(new float[] { 28, 36, 4 });
+                    fsRun = null;
+                }
+                break;
+
+            case eScoreEvent.mine:
+                FloatingScore fs;
+                Vector2 p0 = Input.mousePosition;
+                p0.x /= Screen.width;
+                p0.y /= Screen.height;
+                fsPts = new List<Vector2>();
+                fsPts.Add(p0);
+                fsPts.Add(fsPosMid);
+                fsPts.Add(fsPosRun);
+                fs = Scoreboard.S.CreateFloatingScore(ScoreManager.CHAIN, fsPts);
+                fs.fontSizes = new List<float>(new float[] { 4, 50, 28 });
+                if(fsRun == null)
+                {
+                    fsRun = fs;
+                    fsRun.reportFinishTo=null;
+                }
+                else
+                {
+                    fs.reportFinishTo = fsRun.gameObject;
+                }
+                break;
+
+        }
+    }
 
 
-<<<<<<< HEAD
-=======
-   }
->>>>>>> parent of ffd9e8a... Works fully
-=======
 }
->>>>>>> parent of dcf04ee... Fix problems added background
-

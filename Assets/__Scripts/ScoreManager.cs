@@ -96,3 +96,6 @@ public class ScoreManager : MonoBehaviour
     static public int SCORE_RUN { get { return S.scoreRun; } }
 }
 
+    
+
+

@@ -55,7 +55,7 @@ public class Scoreboard : MonoBehaviour
         canvasTrans = transform.parent;
     }
 
-    public void FSCallback(FloatingScore fs)
+    public void FSCallback (FloatingScore fs)
     {
         score += fs.score;
     }

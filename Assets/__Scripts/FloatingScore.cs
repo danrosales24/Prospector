@@ -63,7 +63,7 @@ public class FloatingScore : MonoBehaviour
         state = eFSState.pre;
     }
 
-    public void FSCallback(FloatingScore fs)
+    public void FSCallback (FloatingScore fs)
     {
         score += fs.score;
     }
@@ -85,7 +85,7 @@ public class FloatingScore : MonoBehaviour
             {
                 uC = 1;
                 state = eFSState.post;
-                if (reportFinishTo != null)
+                if(reportFinishTo != null)
                 {
                     reportFinishTo.SendMessage("FSCALLback", this);
                     Destroy(gameObject);
@@ -103,7 +103,7 @@ public class FloatingScore : MonoBehaviour
 
             Vector2 pos = Utils.Bezier(uC, bezierPts);
             rectTrans.anchorMin = rectTrans.anchorMax = pos;
-            if (fontSizes != null && fontSizes.Count > 0)
+            if(fontSizes != null && fontSizes.Count > 0)
             {
                 int size = Mathf.RoundToInt(Utils.Bezier(uC, fontSizes));
                 GetComponent<Text>().fontSize = size;

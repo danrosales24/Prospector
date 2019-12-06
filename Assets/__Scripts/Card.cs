@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Card : MonoBehaviour
-{
+public class Card : MonoBehaviour {
 
     public string suit;
     public int rank;
@@ -63,18 +62,15 @@ public class Card : MonoBehaviour
         }
     }
 
-    public bool faceUp
-    {
-        get
-        {
-            return (!back.activeSelf);
-        }
+    public bool faceUp {
+		get {
+			return (!back.activeSelf);
+		}
 
-        set
-        {
-            back.SetActive(!value);
-        }
-    }
+		set {
+			back.SetActive(!value);
+		}
+	}
 
     virtual public void OnMouseUpAsButton()
     {
@@ -85,19 +81,17 @@ public class Card : MonoBehaviour
 } // class Card
 
 [System.Serializable]
-public class Decorator
-{
-    public string type;         // For card pips, tyhpe = "pip"
-    public Vector3 loc;         // location of sprite on the card
-    public bool flip = false;   //whether to flip vertically
-    public float scale = 1.0f;
+public class Decorator{
+	public string	type;			// For card pips, tyhpe = "pip"
+	public Vector3	loc;			// location of sprite on the card
+	public bool		flip = false;	//whether to flip vertically
+	public float 	scale = 1.0f;
 }
 
 [System.Serializable]
-public class CardDefinition
-{
-    public string face; //sprite to use for face cart
-    public int rank;    // value from 1-13 (Ace-King)
-    public List<Decorator>
-                    pips = new List<Decorator>();  // Pips Used
+public class CardDefinition{
+	public string	face;	//sprite to use for face cart
+	public int		rank;	// value from 1-13 (Ace-King)
+	public List<Decorator>	
+					pips = new List<Decorator>();  // Pips Used
 }
