@@ -113,6 +113,7 @@ NavMeshSettings:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &127907062
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,6 +191,8 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 127907062}
   m_CullTransparentMesh: 0
+=======
+>>>>>>> parent of dcf04ee... Fix problems added background
 --- !u!1 &382834198
 GameObject:
   m_ObjectHideFlags: 0
