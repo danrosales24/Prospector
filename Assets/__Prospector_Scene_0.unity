@@ -112,6 +112,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< HEAD
 --- !u!1 &127907062
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,6 +368,8 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 712057089}
   m_CullTransparentMesh: 0
+=======
+>>>>>>> parent of 2d0b75d... Score added pg923
 --- !u!1 &827460508
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,6 +604,7 @@ MonoBehaviour:
   - Row3
   - Discard
   - Draw
+<<<<<<< HEAD
 --- !u!1 &982737302
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,3 +840,5 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639989570}
   m_CullTransparentMesh: 0
+=======
+>>>>>>> parent of 2d0b75d... Score added pg923
